@@ -6,8 +6,6 @@ function initialize(){
 
 }
 
-
-
 function Player( key ){
     this.key = key
     this.position = 0
@@ -22,22 +20,29 @@ Player.prototype = {
 
 
 
-function Game(){}
+function Game(){
+    this.playerKeys = []
+}
 
 
 Game.prototype = {
     bindEventListeners: function(){
         var numberPicker = document.getElementById( 'number-picker' )
-
-        document.addEventListener( "keyup", this.updatePlayerPosition )
         numberPicker.addEventListener( "submit", this.getNumberOfPlayers )
 
+        var letterPicker = document.getElementsByClassName('letters')[0]
+        letterPicker.addEventListener( "click",  this.addKeys.bind(this) ) 
+
+        document.addEventListener( "keyup", this.updatePlayerPosition )
     },
 
     getNumberOfPlayers: function(e){
         e.preventDefault()
         var numOfPlayers = document.getElementById( 'chosen-number' ).value
-        console.log( numOfPlayers )
+    },
+
+    addKeys: function(e){
+        this.playerKeys.push(e.target.innerHTML)
     },
     
 
