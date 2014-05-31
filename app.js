@@ -1,18 +1,20 @@
 window.addEventListener( "load", initialize )
 
 function initialize(){
-    console.log( "meow" )
+    var game = new Game()
+    game.bindEventListeners()
+
 }
 
 
 
-function Car( key ){
+function Player( key ){
     this.key = key
     this.position = 0
     this.win = false
 }
 
-Car.prototype = {
+Player.prototype = {
     updatePosition: function(){
         this.position += 1
     }
@@ -20,12 +22,28 @@ Car.prototype = {
 
 
 
-function Controller(){}
+function Game(){}
 
 
-Controller.prototype = {
-    bindEventListeners: function(){},
-    updateCarPosition: function(){},
+Game.prototype = {
+    bindEventListeners: function(){
+        var numberPicker = document.getElementById( 'number-picker' )
+
+        document.addEventListener( "keyup", this.updatePlayerPosition )
+        numberPicker.addEventListener( "submit", this.getNumberOfPlayers )
+
+    },
+
+    getNumberOfPlayers: function(e){
+        e.preventDefault()
+        var numOfPlayers = document.getElementById( 'chosen-number' ).value
+        console.log( numOfPlayers )
+    },
+    
+
+    updatePlayerPosition: function(e){
+        console.log(e)
+    },
     checkForWinner: function(){},
     sendRenderInfo: function(){} 
 }
@@ -33,11 +51,8 @@ Controller.prototype = {
 
 
 function View(){}
-
 View.prototype = {
-    renderCar: function(){
-        console.log( "render car" )
+    renderPlayer: function(){
+        console.log( "render player" )
     }
 }
-
-
