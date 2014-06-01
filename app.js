@@ -1,7 +1,7 @@
 window.addEventListener( "load", initialize )
 
 function initialize(){
-    var game = new Game()
+    game = new Game()
     game.bindEventListeners()
 
 }
@@ -22,13 +22,14 @@ Player.prototype = {
 
 function Game(){
     this.playerKeys = []
+    this.clickCount = 0
 }
 
 
 Game.prototype = {
     bindEventListeners: function(){
         var numberPicker = document.getElementById( 'number-picker' )
-        numberPicker.addEventListener( "submit", this.getNumberOfPlayers )
+        numberPicker.addEventListener( "submit", this.getNumberOfPlayers.bind(this) )
 
         var letterPicker = document.getElementsByClassName('letters')[0]
         letterPicker.addEventListener( "click",  this.addKeys.bind(this) ) 
@@ -38,11 +39,20 @@ Game.prototype = {
 
     getNumberOfPlayers: function(e){
         e.preventDefault()
-        var numOfPlayers = document.getElementById( 'chosen-number' ).value
+        this.numberOfPlayers = document.getElementById( 'chosen-number' ).value
+
+        // var numOfPlayers = document.getElementById( 'chosen-number' ).value
     },
 
+
     addKeys: function(e){
-        this.playerKeys.push(e.target.innerHTML)
+        if (this.numberOfPlayers > this.clickCount){
+            this.playerKeys.push(e.target.innerHTML)
+            this.clickCount += 1
+        }
+        else {
+            numberPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
+        }
     },
     
 
