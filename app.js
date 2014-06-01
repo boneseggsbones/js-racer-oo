@@ -1,7 +1,8 @@
 window.addEventListener( "load", initialize )
 
 function initialize(){
-    game = new Game()
+    var view = new View()
+    game = new Game( view )
     game.bindEventListeners()
 
 }
@@ -20,20 +21,20 @@ Player.prototype = {
 
 
 
-function Game(){
+function Game( view ){
     this.playerKeys = []
     this.clickCount = 0
+    this.view = view
 }
 
 
 Game.prototype = {
     bindEventListeners: function(){
         var numberPicker = document.getElementById( 'number-picker' )
-        numberPicker.addEventListener( "submit", this.getNumberOfPlayers.bind(this) )
-
         var letterPicker = document.getElementsByClassName('letters')[0]
+        
+        numberPicker.addEventListener( "submit", this.getNumberOfPlayers.bind(this) )
         letterPicker.addEventListener( "click",  this.addKeys.bind(this) ) 
-
         document.addEventListener( "keyup", this.updatePlayerPosition )
     },
 
@@ -51,21 +52,25 @@ Game.prototype = {
             this.clickCount += 1
         }
         else {
-            var numberPicker = document.getElementById( 'number-picker' )
-            numberPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
-            var letterPicker = document.getElementsByClassName('letters')[0]
-            letterPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
-            
-            document.getElementById( 'number-picker' ).className = 'off'
-            document.getElementsByClassName('letters')[0].className = 'off'
-
+            this.removeWelcomeListeners()
+            this.view.hideWelcomeScreen()
         }
     },
-    
 
     updatePlayerPosition: function(e){
         console.log(e)
     },
+
+    removeWelcomeListeners: function(){
+        var numberPicker = document.getElementById( 'number-picker' )
+        var letterPicker = document.getElementsByClassName( 'letters' )[ 0 ]
+
+        numberPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
+        letterPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
+    },
+
+
+
     checkForWinner: function(){},
     sendRenderInfo: function(){} 
 }
@@ -76,5 +81,13 @@ function View(){}
 View.prototype = {
     renderPlayer: function(){
         console.log( "render player" )
+    },
+
+    hideWelcomeScreen: function(){
+        document.getElementById( 'number-picker' ).className = 'off'
+        document.getElementsByClassName('letters')[0].className = 'off'
+        
     }
+
+
 }
