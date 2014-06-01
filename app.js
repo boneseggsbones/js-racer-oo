@@ -53,8 +53,10 @@ Game.prototype = {
         else {
             var numberPicker = document.getElementById( 'number-picker' )
             numberPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
+            var letterPicker = document.getElementsByClassName('letters')[0]
+            letterPicker.removeEventListener( "submit", this.getNumberOfPlayers.bind(this) )
+            
             document.getElementById( 'number-picker' ).className = 'off'
-
             document.getElementsByClassName('letters')[0].className = 'off'
 
         }
